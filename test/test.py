@@ -4,7 +4,7 @@ from mpl_gifv import GIF
 
 f = plt.figure(figsize=(12,4))
 
-mov = GIF('temp.gif',fps=30,dpi=100,loop=0)
+mov = GIF('sum_of_sines.gif',fps=30,dpi=100,loop=0)
 
 t = np.linspace(0,10*np.pi,1024)
 sig1 = np.sin(t)
