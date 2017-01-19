@@ -8,7 +8,7 @@
 
 2. To run test.py verify installation of [numpy](http://numpy.org) and [matplotlib](http://matplotlib.org).
 
-3. Put the mpl_gifv folder somewhere in your pythonpath.
+3. Put the fig2gif folder somewhere in your pythonpath.
 
 ## The basic idea:
 
