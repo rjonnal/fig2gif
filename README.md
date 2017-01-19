@@ -12,7 +12,26 @@
 
 1. Create a GIFV object.
 
-2. Add frames to it (by passing a matplotlib figure handle to its add function.
+2. Add frames to it by passing matplotlib figure handles to its add function.
 
 3. Call its make function.
+
+## Example
+
+```
+from matplotlib import pyplot as plt
+import numpy as np
+
+f = plt.figure()
+
+mov = GIFV('example.gif',10)
+
+for k in range(10):
+    plt.cla()
+    plt.imshow(np.random.rand(100,100))
+    plt.pause(.000001)
+    mov.add(f)
+
+mov.make()
+```
 
