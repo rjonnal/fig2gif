@@ -6,7 +6,7 @@
 
 1. Install [ImageMagick](https://www.imagemagick.org). In Debian/Ubuntu run `apt-get install imagemagick`. For other distros and OSs, see [ImageMagick installation instructions](https://www.imagemagick.org/script/binary-releases.php).
 
-2. To run test.py verify installation of [numpy](http://numpy.org) and [matplotlib](http://matplotlib.org).
+2. To run tests verify installation of [numpy](http://numpy.org) and [matplotlib](http://matplotlib.org).
 
 3. Put the fig2gif folder somewhere in your pythonpath.
 
