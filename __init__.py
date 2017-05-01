@@ -6,6 +6,16 @@ logging.basicConfig(level=logging.INFO)
 class GIF:
 
     def __init__(self,gif_filename,fps=30,dpi=100,loop=0,autoclean=False):
+        """Create a GIF object.
+
+        Argument:
+        gif_filename -- the name of the GIF file to output with GIF.make()
+        Keyword arguments:
+        fps -- frames per second, default 30
+        dpi -- dots per inch, default 100
+        loop -- how many times to loop, default 0 (infinite)
+        autoclean -- clean up temporary files, default False
+        """       
         self.logger = logging.getLogger(__name__)
         self.gif_filename = gif_filename
         self.fps = fps
@@ -40,6 +50,11 @@ class GIF:
                     print e
                 
     def add(self,fig):
+        """Add a frame to a GIF.
+
+        Argument:
+        fig -- the handle of a matplotlib figure
+        """       
         # save the given figure to the working directory
         outfn = os.path.join(self.wdir,'frame_%020d.png'%self.index)
         self.logger.info('Saving figure to file %s.'%outfn)
@@ -47,6 +62,8 @@ class GIF:
         self.index = self.index + 1
 
     def make(self):
+        """Make the GIF.
+        """       
 
         # convert FPS into IM's delay parameter (expressed in 10 ms "ticks")
         delay = 1.0/float(self.fps)*100.0
