@@ -58,10 +58,10 @@ class GIF:
         # save the given figure to the working directory
         outfn = os.path.join(self.wdir,'frame_%020d.png'%self.index)
         self.logger.info('Saving figure to file %s.'%outfn)
-        fig.savefig(outfn,dpi=self.dpi)
+        fig.savefig(outfn,dpi=self.dpi,facecolor=fig.get_facecolor(),edgecolor='none')
         self.index = self.index + 1
-
-    def make(self):
+        
+    def make(self,make_avi=False):
         """Make the GIF.
         """       
 
@@ -73,6 +73,12 @@ class GIF:
         command = ['convert','-delay','%0.1f'%delay,'-loop','%d'%self.loop,'%s'%(os.path.join(self.wdir,'frame*.png')),'%s'%self.gif_filename]
         call(command)
 
+        if make_avi:
+            avi_filename = os.path.splitext(self.gif_filename)[1]+'.avi'
+            self.logger.info('Running ImageMagick convert to create gif in %s.'%avi_filename)
+            command = ['mencoder','\"mf://%s/\"'%os.path.join(os.path.join('.',self.wdir),'frame*.png'), '-o', avi_filename, '-ovc', 'lavc', '-lavcopts', 'vcodec=mjpeg']
+            call(command)
+        
         if self.autoclean:
             self.logger.info('Cleaning up.')
             # clean up temporary png files
