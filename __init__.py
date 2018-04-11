@@ -72,16 +72,16 @@ class GIF:
         self.logger.info('Running ImageMagick convert to create gif in %s.'%self.gif_filename)
         command = ['convert','-delay','%0.1f'%delay,'-loop','%d'%self.loop,'%s'%(os.path.join(self.wdir,'frame*.png')),'%s'%self.gif_filename]
         if verbose:
-            command = command[0]+['-verbose']+command[1:]
+            command = command[:1]+['-verbose']+command[1:]
         if make_script:
             folder,filename = os.path.split(self.gif_filename)
             script_fn = os.path.join(folder,'make_'+os.path.splitext(filename)[0]+'.sh')
+            print script_fn
             fid = open(script_fn,'w')
             fid.write('#! /bin/bash\n\n')
-            fid.write(command)
+            fid.write(' '.join(command))
+            fid.write('\n')
             fid.close()
-            
-        
         call(command)
 
         if make_avi:
