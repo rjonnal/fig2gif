@@ -61,7 +61,7 @@ class GIF:
         fig.savefig(outfn,dpi=self.dpi,facecolor=fig.get_facecolor(),edgecolor='none')
         self.index = self.index + 1
         
-    def make(self,make_avi=False):
+    def make(self,make_avi=False,verbose=False,make_script=False):
         """Make the GIF.
         """       
 
@@ -71,10 +71,21 @@ class GIF:
         # run ImageMagick convert function to make the GIF
         self.logger.info('Running ImageMagick convert to create gif in %s.'%self.gif_filename)
         command = ['convert','-delay','%0.1f'%delay,'-loop','%d'%self.loop,'%s'%(os.path.join(self.wdir,'frame*.png')),'%s'%self.gif_filename]
+        if verbose:
+            command = command[0]+['-verbose']+command[1:]
+        if make_script:
+            folder,filename = os.path.split(self.gif_filename)
+            script_fn = os.path.join(folder,'make_'+os.path.splitext(filename)[0]+'.sh')
+            fid = open(script_fn,'w')
+            fid.write('#! /bin/bash\n\n')
+            fid.write(command)
+            fid.close()
+            
+        
         call(command)
 
         if make_avi:
-            avi_filename = os.path.splitext(self.gif_filename)[1]+'.avi'
+            avi_filename = os.path.splitext(self.gif_filename)[0]+'.avi'
             self.logger.info('Running ImageMagick convert to create gif in %s.'%avi_filename)
             command = ['mencoder','\"mf://%s/\"'%os.path.join(os.path.join('.',self.wdir),'frame*.png'), '-o', avi_filename, '-ovc', 'lavc', '-lavcopts', 'vcodec=mjpeg']
             call(command)
