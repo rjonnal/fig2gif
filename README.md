@@ -124,4 +124,4 @@ for k in range(N):
 # make the GIF object
 mov.make()
 ```
-![Output video.](./test/sum_of_sines.gif)
+![Output video.](./test/sum_of_sines.webm)
