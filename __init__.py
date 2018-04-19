@@ -90,7 +90,9 @@ class GIF:
             webm_filename = os.path.splitext(self.gif_filename)[0]+'.webm'
             self.logger.info('Running ImageMagick convert to create gif in %s.'%webm_filename)
 
-            command = ['ffmpeg','-framerate','%d'%self.fps,'-f','image2','-i',os.path.join(self.wdir,self.frame_string),'-c:v','libvpx-vp9','-pix_fmt','yuva420p',webm_filename]
+            #-lossless 1 is causing dropped frames; not sure why
+            #command = ['ffmpeg','-y','-framerate','%d'%self.fps,'-f','image2','-i',os.path.join(self.wdir,self.frame_string),'-c:v','libvpx-vp9','-pix_fmt','yuva420p','-lossless','1',webm_filename]
+            command = ['ffmpeg','-y','-framerate','%d'%self.fps,'-f','image2','-i',os.path.join(self.wdir,self.frame_string),'-c:v','libvpx-vp9','-pix_fmt','yuva420p',webm_filename]
             call(command)
         
         if self.autoclean:
