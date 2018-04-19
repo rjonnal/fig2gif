@@ -5,7 +5,7 @@ logging.basicConfig(level=logging.INFO)
 
 class GIF:
 
-    def __init__(self,gif_filename,fps=30,dpi=100,loop=0,autoclean=False):
+    def __init__(self,gif_filename,fps=30,dpi=100,loop=0,autoclean=True):
         """Create a GIF object.
 
         Argument:
@@ -33,6 +33,7 @@ class GIF:
         self.index = 0
         self.dpi = dpi
         self.autoclean = autoclean
+        self.frame_string = 'frame_%09d.png'
         
     def __del__(self):
         if self.autoclean:
@@ -56,12 +57,12 @@ class GIF:
         fig -- the handle of a matplotlib figure
         """       
         # save the given figure to the working directory
-        outfn = os.path.join(self.wdir,'frame_%020d.png'%self.index)
+        outfn = os.path.join(self.wdir,self.frame_string%self.index)
         self.logger.info('Saving figure to file %s.'%outfn)
         fig.savefig(outfn,dpi=self.dpi,facecolor=fig.get_facecolor(),edgecolor='none')
         self.index = self.index + 1
         
-    def make(self,make_avi=False,verbose=False,make_script=False):
+    def make(self,make_gif=True,make_webm=False,verbose=False,make_script=False):
         """Make the GIF.
         """       
 
@@ -82,12 +83,14 @@ class GIF:
             fid.write(' '.join(command))
             fid.write('\n')
             fid.close()
-        call(command)
+        if make_gif:
+            call(command)
 
-        if make_avi:
-            avi_filename = os.path.splitext(self.gif_filename)[0]+'.avi'
-            self.logger.info('Running ImageMagick convert to create gif in %s.'%avi_filename)
-            command = ['mencoder','\"mf://%s/\"'%os.path.join(os.path.join('.',self.wdir),'frame*.png'), '-o', avi_filename, '-ovc', 'lavc', '-lavcopts', 'vcodec=mjpeg']
+        if make_webm:
+            webm_filename = os.path.splitext(self.gif_filename)[0]+'.webm'
+            self.logger.info('Running ImageMagick convert to create gif in %s.'%webm_filename)
+
+            command = ['ffmpeg','-framerate','%d'%self.fps,'-f','image2','-i',os.path.join(self.wdir,self.frame_string),'-c:v','libvpx-vp9','-pix_fmt','yuva420p',webm_filename]
             call(command)
         
         if self.autoclean:
