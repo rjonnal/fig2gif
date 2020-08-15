@@ -1,3 +1,4 @@
+from __future__ import print_function
 from subprocess import call
 import os,glob,random,sys
 import logging
@@ -48,7 +49,7 @@ class GIF:
                     os.rmdir(self.wdir)
 
                 except Exception as e:
-                    print e
+                    print(e)
                 
     def add(self,fig):
         """Add a frame to a GIF.
@@ -77,7 +78,7 @@ class GIF:
         if make_script:
             folder,filename = os.path.split(self.gif_filename)
             script_fn = os.path.join(folder,'make_'+os.path.splitext(filename)[0]+'.sh')
-            print script_fn
+            print(script_fn)
             fid = open(script_fn,'w')
             fid.write('#! /bin/bash\n\n')
             fid.write(' '.join(command))

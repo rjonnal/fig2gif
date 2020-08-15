@@ -61,4 +61,4 @@ for k in range(N):
     mov.add(f)
 
 # make the GIF object
-mov.make(make_gif=False,make_webm=True)
+mov.make(make_gif=True,make_webm=True)
