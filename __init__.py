@@ -1,12 +1,30 @@
 from __future__ import print_function
-from subprocess import call
+from subprocess import call,Popen,PIPE
 import os,glob,random,sys
 import logging
 logging.basicConfig(level=logging.INFO)
 
+
+try:
+    p = Popen(['convert','--version'], stdout=PIPE)
+    output,err = p.communicate('')
+    rc = p.returncode
+    assert output.decode('UTF-8').lower().find('imagemagick')>-1
+    im_installed = True
+except:
+    im_installed = False
+    
+try:
+    assert im_installed
+    print('ImageMagick installed.')
+except AssertionError as ae:
+    print('Trouble finding ImageMagick convert function.')
+    print(output)
+    raise ImportError
+    
 class GIF:
 
-    def __init__(self,gif_filename,fps=30,dpi=100,loop=0,autoclean=True):
+    def __init__(self,gif_filename,fps=30,dpi=100,loop=0,autoclean=True,transparent=False):
         """Create a GIF object.
 
         Argument:
@@ -22,7 +40,7 @@ class GIF:
         self.fps = fps
         self.loop = loop
         self.wdir = '%s_%d.tmp'%(self.gif_filename,random.randint(0,2**32))
-
+        self.transparent=transparent
         # generate a random working directory name; if it exists already, make
         # a new one.
         while os.path.exists(self.wdir):
@@ -60,7 +78,11 @@ class GIF:
         # save the given figure to the working directory
         outfn = os.path.join(self.wdir,self.frame_string%self.index)
         self.logger.info('Saving figure to file %s.'%outfn)
+<<<<<<< HEAD
         fig.savefig(outfn,dpi=self.dpi,facecolor=fig.get_facecolor(),edgecolor='none',transparent=True)
+=======
+        fig.savefig(outfn,dpi=self.dpi,facecolor=fig.get_facecolor(),edgecolor='none',transparent=self.transparent)
+>>>>>>> 078101b6c8b75af707725c97a09e0443b874a567
         self.index = self.index + 1
         
     def make(self,make_gif=True,make_webm=False,verbose=False,make_script=False,delete_first=False):
