@@ -3,7 +3,7 @@ import numpy as np
 from fig2gif import GIF
 
 # create a GIF object, specifying an output filename
-mov = GIF('random.gif',fps=10,dpi=50,loop=0)
+mov = GIF('random.gif',fps=10,dpi=50,loop=0,autoclean=False)
 
 # create a matplotlib figure
 f = plt.figure()
@@ -18,4 +18,4 @@ for k in range(10):
     mov.add(f)
 
 # make the gif
-mov.make()
+mov.make(round_trip=True)

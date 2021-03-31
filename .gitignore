@@ -1,15 +1,10 @@
-octopod_config.py
+# temporary directories #
+#########################
+*.tmp
 
 # Compiled source #
 ###################
-*.com
-*.class
-*.dll
-*.exe
-*.o
-*.so
 *.pyc
-*.hdf5
 
 # Packages #
 ############
