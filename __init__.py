@@ -60,10 +60,10 @@ class GIF:
         # save the given figure to the working directory
         outfn = os.path.join(self.wdir,self.frame_string%self.index)
         self.logger.info('Saving figure to file %s.'%outfn)
-        fig.savefig(outfn,dpi=self.dpi,facecolor=fig.get_facecolor(),edgecolor='none')
+        fig.savefig(outfn,dpi=self.dpi,facecolor=fig.get_facecolor(),edgecolor='none',transparent=True)
         self.index = self.index + 1
         
-    def make(self,make_gif=True,make_webm=False,verbose=False,make_script=False):
+    def make(self,make_gif=True,make_webm=False,verbose=False,make_script=False,delete_first=False):
         """Make the GIF.
         """       
 
@@ -72,6 +72,12 @@ class GIF:
 
         # run ImageMagick convert function to make the GIF
         self.logger.info('Running ImageMagick convert to create gif in %s.'%self.gif_filename)
+
+        if delete_first:
+            flist = glob.glob(os.path.join(self.wdir,'frame*.png'))
+            flist.sort()
+            os.remove(flist[0])
+        
         command = ['convert','-delay','%0.1f'%delay,'-loop','%d'%self.loop,'%s'%(os.path.join(self.wdir,'frame*.png')),'%s'%self.gif_filename]
         if verbose:
             command = command[:1]+['-verbose']+command[1:]
