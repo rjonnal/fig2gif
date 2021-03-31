@@ -78,11 +78,7 @@ class GIF:
         # save the given figure to the working directory
         outfn = os.path.join(self.wdir,self.frame_string%self.index)
         self.logger.info('Saving figure to file %s.'%outfn)
-<<<<<<< HEAD
-        fig.savefig(outfn,dpi=self.dpi,facecolor=fig.get_facecolor(),edgecolor='none',transparent=True)
-=======
         fig.savefig(outfn,dpi=self.dpi,facecolor=fig.get_facecolor(),edgecolor='none',transparent=self.transparent)
->>>>>>> 078101b6c8b75af707725c97a09e0443b874a567
         self.index = self.index + 1
         
     def make(self,make_gif=True,make_webm=False,verbose=False,make_script=False,delete_first=False):
