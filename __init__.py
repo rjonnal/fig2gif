@@ -1,6 +1,7 @@
 from __future__ import print_function
 from subprocess import call,Popen,PIPE
 import os,glob,random,sys
+import shutil
 import logging
 logging.basicConfig(level=logging.INFO)
 
@@ -81,7 +82,7 @@ class GIF:
         fig.savefig(outfn,dpi=self.dpi,facecolor=fig.get_facecolor(),edgecolor='none',transparent=self.transparent)
         self.index = self.index + 1
         
-    def make(self,make_gif=True,make_webm=False,verbose=False,make_script=False,delete_first=False,round_trip=False):
+    def make(self,make_gif=True,make_webm=False,verbose=False,make_script=False,delete_first=False,round_trip=False,preview_frame_index=None):
         """Make the GIF.
         """       
 
@@ -96,11 +97,13 @@ class GIF:
         if delete_first:
             os.remove(flist[0])
 
+        if preview_frame_index is not None:
+            png_filename = self.gif_filename.replace('.gif','')+'.png'
+            shutil.copyfile(flist[preview_frame_index],png_filename)
+            
         if round_trip:
             flist = flist + flist[::-1]
 
-
-        
         command = ['convert','-delay','%0.1f'%delay,'-loop','%d'%self.loop]+flist+['%s'%self.gif_filename]
         #command = ['convert','-delay','%0.1f'%delay,'-loop','%d'%self.loop,'%s'%(os.path.join(self.wdir,'frame*.png')),'%s'%self.gif_filename]
         
